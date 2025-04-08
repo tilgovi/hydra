@@ -199,6 +199,8 @@ type Client struct {
 	// parameters MUST NOT be used together.
 	JSONWebKeys *x.JoseJSONWebKeySet `json:"jwks,omitempty" db:"jwks" faker:"-"`
 
+	JSONWebTokenClientAssertionIssuer string `json:"jwt_client_assertion_issuer,omitempty" db:"jwt_client_assertion_issuer"`
+
 	// OAuth 2.0 Token Endpoint Authentication Method
 	//
 	// Requested Client Authentication method for the Token Endpoint. The options are:
@@ -501,6 +503,13 @@ func (c *Client) GetJSONWebKeys() *jose.JSONWebKeySet {
 		return nil
 	}
 	return c.JSONWebKeys.JSONWebKeySet
+}
+
+func (c *Client) GetJSONWebTokenClientAssertionIssuer() string {
+	if c.JSONWebTokenClientAssertionIssuer == "" {
+		return c.ID
+	}
+	return c.JSONWebTokenClientAssertionIssuer
 }
 
 func (c *Client) GetTokenEndpointAuthSigningAlgorithm() string {
